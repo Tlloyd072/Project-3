@@ -7,20 +7,20 @@ namespace DeviceManagement_WebApp.Repository
 {
     public class DeviceRepository
     {
-            protected readonly ConnectedOfficeContext _context = new ConnectedOfficeContext();
+        protected readonly ConnectedOfficeContext _context = new ConnectedOfficeContext();
 
-            // GET ALL: Products
-            public IEnumerable<Device> GetAll()
-            {
-                return _context.Device.ToList();
-            }
+        // GET ALL: Products
+        public IEnumerable<Device> GetAll()
+        {
+            return _context.Device.ToList();
+        }
 
-            // TO DO: Add ‘Get By Id’
-            // TO DO: Add ‘Create’
-            // TO DO: Add ‘Edit’
-            // TO DO: Add ‘Delete’
-            // TO DO: Add ‘Exists’
-        
+        // TO DO: Add ‘Get By Id’
+        // TO DO: Add ‘Create’
+        // TO DO: Add ‘Edit’
+        // TO DO: Add ‘Delete’
+        // TO DO: Add ‘Exists’
+
 
     }
 }
