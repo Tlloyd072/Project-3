@@ -5,22 +5,16 @@ using System.Linq;
 
 namespace DeviceManagement_WebApp.Repository
 {
-    public class DeviceRepository
+    public class DeviceRrepository : GenericRepository<Device>, IDeviceRepository
     {
-        protected readonly ConnectedOfficeContext _context = new ConnectedOfficeContext();
-
-        // GET ALL: Products
-        public IEnumerable<Device> GetAll()
+        public DeviceRrepository(ConnectedOfficeContext context) : base(context)
         {
-            return _context.Device.ToList();
         }
 
-        // TO DO: Add ‘Get By Id’
-        // TO DO: Add ‘Create’
-        // TO DO: Add ‘Edit’
-        // TO DO: Add ‘Delete’
-        // TO DO: Add ‘Exists’
-
-
+        public Device GetMostRecentService()
+        {
+            return _context.Device.OrderByDescending(device => device.DateCreated).FirstOrDefault();
+        }
     }
+
 }
