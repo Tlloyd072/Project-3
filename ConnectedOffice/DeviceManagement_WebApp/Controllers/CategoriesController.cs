@@ -10,6 +10,7 @@ using DeviceManagement_WebApp.Models;
 
 namespace DeviceManagement_WebApp.Controllers
 {
+
     public class CategoriesController : Controller
     {
         private readonly ConnectedOfficeContext _context;
@@ -19,13 +20,13 @@ namespace DeviceManagement_WebApp.Controllers
             _context = context;
         }
 
-        // GET: Categories
+        // GET: Categories displays all categorory records in a table format
         public async Task<IActionResult> Index()
         {
             return View(await _context.Category.ToListAsync());
         }
 
-        // GET: Categories/Details/5
+        // GET: Categories/Details/5 displays a specific category based on the query received to the user
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
