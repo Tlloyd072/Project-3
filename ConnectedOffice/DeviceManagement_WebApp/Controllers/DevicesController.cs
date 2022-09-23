@@ -14,17 +14,17 @@ namespace DeviceManagement_WebApp.Controllers
     public class DevicesController : Controller
     {
         private readonly IDeviceRepository _deviceRepository;
-
         public DevicesController(IDeviceRepository deviceRepository)
         {
             _deviceRepository = deviceRepository;
         }
 
-        // GET: Devices
+        // GET: Services
         public async Task<IActionResult> Index()
         {
             return View(_deviceRepository.GetAll());
         }
+
 
         // GET: Devices/Details/5
         public async Task<IActionResult> Details(int id)
