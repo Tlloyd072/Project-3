@@ -24,7 +24,7 @@ namespace DeviceManagement_WebApp.Controllers
             _context = context;
         }
 
-        // GET: Products
+        // GET: Categories
         public async Task<IActionResult> Index()
         {
 
@@ -32,7 +32,7 @@ namespace DeviceManagement_WebApp.Controllers
 
             return View(results);
         }
-        //Get: Products/Details/1
+        //Get: Categories/Details/1
         public async Task<IActionResult> Details(int id)
         {
             if (id == null) return NotFound();
@@ -41,13 +41,13 @@ namespace DeviceManagement_WebApp.Controllers
             return View(fetchProduct);
         }
 
-        // GET: Products/Create
+        // GET: Categories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Products/Create
+        // POST: Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -63,14 +63,14 @@ namespace DeviceManagement_WebApp.Controllers
             return View(category);
         }
 
-        // GET: Products/Edit/5
+        // GET: Categories/Edit/5
         public ActionResult Edit(int id)
         {
             Category category = categoryRepository.GetById(id);
             return View(category);
         }
 
-        // POST: Products/Edit/5
+        // POST: Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -101,7 +101,7 @@ namespace DeviceManagement_WebApp.Controllers
             return View(category);
         }
 
-        // GET: Products/Delete/5
+        // GET: Categories/Delete/5
         public ActionResult Delete(int id)
         {
             try
@@ -118,7 +118,7 @@ namespace DeviceManagement_WebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: Products/Delete/5
+        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(bool? saveChangesError = false, int id = 0)
