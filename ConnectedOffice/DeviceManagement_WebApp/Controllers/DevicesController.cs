@@ -40,6 +40,55 @@ namespace DeviceManagement_WebApp.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult SaveDevice()
+        {
+            return View(new Device()); 
+
+        }
+        [HttpPost]
+        public IActionResult SaveDevice(Device device)
+        {
+           var result =  _deviceRepository.SaveDevice(device);
+            if(result)
+                return RedirectToAction("Index");
+            return View(result);
+
+        }
+        [HttpGet]
+        public IActionResult UpdateDevice(int id)
+        {
+            var device = _deviceRepository.GetById(id);
+            return View(device);
+
+        }
+        [HttpPost]
+        public IActionResult UpdateDevice(Device device)
+        {
+            var result = _deviceRepository.UpdateDevice(device);
+            if (result)
+                return RedirectToAction("Index");
+            return View(result);
+
+        }
+
+        [HttpGet]
+        public IActionResult DeleteDevice(int id)
+        {
+            var device = _deviceRepository.GetById(id);
+            return View(device);
+
+        }
+        [HttpPost]
+        public IActionResult DeleteDevice(int id,Device device)
+        {
+            var result = _deviceRepository.DeleteDevice(id);
+            if (result)
+                return RedirectToAction("Index");
+            return View(device);
+
+        }
+
         /**
         // POST: Devices/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
