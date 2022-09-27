@@ -1,15 +1,14 @@
 ﻿@model IEnumerable<DeviceManagement_WebApp.Models.Device>
 
 @{
-    ViewData["Title"] = "Devices";
+    ViewData["Title"] = "Index";
 }
 
-<h1>Devices
-    <a asp-action="Create">
-        <img src="~/images/create.png" style="height:30px; width:30px; position:relative; top:-2px" />
-    </a>
-</h1>
+<h1>Index</h1>
 
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -31,8 +30,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Zone)
             </th>
-            <th></th>
-            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -57,21 +54,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Zone.ZoneName)
             </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.DeviceId">
-                        <img src="~/images/edit.png" style="height:20px;width:20px;" />
-                    </a>
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.DeviceId">
-                        <img src="~/images/details.png" style="height:20px;width:20px;" />
-                    </a>
-                </td>
-                <td>
-                    <a asp-action="Delete" asp-route-id="@item.DeviceId">
-                        <img src="~/images/delete.png" style="height:20px;width:20px;" />
-                    </a>
-                </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DeviceId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DeviceId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DeviceId">Delete</a>
+            </td>
         </tr>
 }
     </tbody>
