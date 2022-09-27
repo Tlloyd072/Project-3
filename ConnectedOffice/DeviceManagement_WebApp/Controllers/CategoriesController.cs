@@ -18,7 +18,7 @@ namespace DeviceManagement_WebApp.Controllers
         private readonly ConnectedOfficeContext _context;
         private CategoryRepository categoryRepository = new CategoryRepository();
 
-
+        
         public CategoriesController(ConnectedOfficeContext context)
         {
             _context = context;
@@ -28,17 +28,26 @@ namespace DeviceManagement_WebApp.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var results = categoryRepository.GetAll();
+            var device =  categoryRepository.GetAll();
 
-            return View(results);
+            return View(device);
         }
         //Get: Categories/Details/1
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null) return NotFound();
-            var fetchProduct = categoryRepository.GetById(id);
-            if (fetchProduct == null) return NotFound();
-            return View(fetchProduct);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var category = await _context.Category
+                .FirstOrDefaultAsync(m => m.CategoryId == id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
         }
 
         // GET: Categories/Create
@@ -64,9 +73,18 @@ namespace DeviceManagement_WebApp.Controllers
         }
 
         // GET: Categories/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> EditAsync(Guid? id)
         {
-            Category category = categoryRepository.GetById(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var category = await _context.Category.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
             return View(category);
         }
 
@@ -102,33 +120,32 @@ namespace DeviceManagement_WebApp.Controllers
         }
 
         // GET: Categories/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
-            try
+            if (id == null)
             {
-                Category category = categoryRepository.GetById(id);
-                categoryRepository.DeleteCategory(id);
-                categoryRepository.Save();
+                return NotFound();
             }
-            catch (DataException /* dex */)
+
+            var category = await _context.Category
+                .FirstOrDefaultAsync(m => m.CategoryId == id);
+            if (category == null)
             {
-                //Log the error (uncomment dex variable name after DataException and add a line here to write a log.
-                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
+                return NotFound();
             }
-            return RedirectToAction("Index");
+
+            return View(category);
         }
 
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(bool? saveChangesError = false, int id = 0)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (saveChangesError.GetValueOrDefault())
-            {
-                ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
-            }
-            Category category = categoryRepository.GetById(id);
-            return View(category);
+            var category = await _context.Category.FindAsync(id);
+            _context.Category.Remove(category);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
         //[HttpGet]
         public async Task<IActionResult> Exists(string Find)
@@ -149,5 +166,6 @@ namespace DeviceManagement_WebApp.Controllers
         {
             return _context.Category.Any(e => e.CategoryId == id);
         }
+
     }
 }
