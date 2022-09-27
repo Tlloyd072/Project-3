@@ -7,24 +7,54 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DeviceManagement_WebApp.Data;
 using DeviceManagement_WebApp.Models;
+using DeviceManagement_WebApp.Repository;
 
 namespace DeviceManagement_WebApp.Controllers
 {
     public class ZonesController : Controller
     {
-        private readonly ConnectedOfficeContext _context;
-
-        public ZonesController(ConnectedOfficeContext context)
+        private readonly IZonesRepository _zoneRepository;
+        public ZonesController(IZonesRepository zoneRepository)
         {
-            _context = context;
+            _zoneRepository = zoneRepository;
+        }
+        // GET: Zone/Create
+        public IActionResult Create()
+        {
+            return View(new Zone());
+        }
+        [HttpPost]
+        public ActionResult Create(Zone zone)
+        {
+            _zoneRepository.AddZone(zone);
+            _zoneRepository.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public ActionResult Update(int id)
+        {
+            return View(_zoneRepository.GetById(id));
+        }
+        [HttpPost]
+        public ActionResult Update(Zone zone)
+        {
+            _zoneRepository.UpdateZone(zone);
+            _zoneRepository.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public ActionResult Delete(int id)
+        {
+            _zoneRepository.DeleteZone(id);
+            _zoneRepository.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Zones
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Zone.ToListAsync());
+            var zone = _zoneRepository.GetAll();
+            return View(zone);
         }
-
+        /**
         // GET: Zones/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -143,6 +173,6 @@ namespace DeviceManagement_WebApp.Controllers
         private bool ZoneExists(Guid id)
         {
             return _context.Zone.Any(e => e.ZoneId == id);
-        }
+        }**/
     }
 }
