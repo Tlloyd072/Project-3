@@ -15,79 +15,54 @@ namespace DeviceManagement_WebApp.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly ConnectedOfficeContext _context;
-        private CategoryRepository categoryRepository = new CategoryRepository();
-
-        
-        public CategoriesController(ConnectedOfficeContext context)
+        private readonly ICategoryRepository _categoryRepository;
+        public CategoriesController(ICategoryRepository categoryRepository)
         {
-            _context = context;
+            _categoryRepository = categoryRepository;
         }
-
-        // GET: Categories
-        public async Task<IActionResult> Index()
-        {
-
-            var device =  categoryRepository.GetAll();
-
-            return View(device);
-        }
-        //Get: Categories/Details/1
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var category = await _context.Category
-                .FirstOrDefaultAsync(m => m.CategoryId == id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return View(category);
-        }
-
-        // GET: Categories/Create
+        // Create: displays the create page to fill in new category record
         public IActionResult Create()
         {
-            return View();
+            return View(new Category());
         }
-
-        // POST: Categories/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        // this method allows to add and save data captured from the create view
         public ActionResult Create(Category category)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(category);
-                _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(category);
+            _categoryRepository.AddCategory(category);
+            _categoryRepository.SaveChanges();
+            return RedirectToAction("Index");
         }
-
-        // GET: Categories/Edit/5
-        public async Task<ActionResult> EditAsync(Guid? id)
+        [HttpGet] 
+        // this method is the same the edit / and GetByIt. it displays a specific category record based on the id parsed onto it
+        public ActionResult Update(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var category = await _context.Category.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-            return View(category);
+            return View(_categoryRepository.GetById(id));
+        }
+        [HttpPost]
+        //this method adds and saves data captured from the update view and redirects to the index page
+        public ActionResult Update(Category category)
+        {
+            _categoryRepository.UpdateCategory(category);
+            _categoryRepository.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        //deletes a record from the database based on the id parse through
+        public ActionResult Delete(int id)
+        {
+            _categoryRepository.DeleteCategory(id);
+            _categoryRepository.SaveChanges();
+            return RedirectToAction("Index");
         }
 
+        // GET: Category displayes all records in category table
+        public async Task<IActionResult> Index()
+        {
+            var zone = _categoryRepository.GetAll();
+            return View(zone);
+        }
+        /**
         // POST: Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -100,7 +75,7 @@ namespace DeviceManagement_WebApp.Controllers
             {
                 try
                 {
-                    categoryRepository.UpdateCategory(category);
+                    categoryRepository.Update(category);
                     categoryRepository.Save();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -166,6 +141,6 @@ namespace DeviceManagement_WebApp.Controllers
         {
             return _context.Category.Any(e => e.CategoryId == id);
         }
-
+        **/
     }
 }
