@@ -21,57 +21,69 @@ namespace DeviceManagement_WebApp.Controllers
             _deviceRepository = deviceRepository;
         }
 
-        // GET: Services
+        // GET: Device displays all records in Device table
         public async Task<IActionResult> Index()
         {
-            return View(_deviceRepository.GetAll());
+            var device = _deviceRepository.GetAll();
+            return View(device);
         }
-        // GET: Devices/Create
+
+        //Create displays the create page to fill in a new Device record
         public IActionResult Create()
         {
             return View(new Device());
         }
         [HttpPost]
+        // this method allows to add and save data captured from the create view
+
         public ActionResult Create(Device device)
         {
             _deviceRepository.AddDevice(device);
             _deviceRepository.SaveChanges();
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        // this method is the same the edit / and GetByIt. it displays a specific Device record based on the id parsed through
+
         public ActionResult Update(int id)
         {
             return View(_deviceRepository.GetById(id));
         }
         [HttpPost]
+        //this method adds and saves data captured from the update view and redirects to the index page
+
         public ActionResult Update(Device device)
         {
             _deviceRepository.UpdateDevice(device);
             _deviceRepository.SaveChanges();
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        //deletes a record from the database based on the id parse through
+
         public ActionResult Delete(int id)
         {
             _deviceRepository.DeleteDevice(id);
             _deviceRepository.SaveChanges();
             return RedirectToAction("Index");
         }
-        /**
-       // GET: Devices/Details/5
-       public IActionResult Details(int? id)
-       {
-           if (id == null)
-           {
-               return NotFound();
-           }
+       
+       //// GET: Devices/Details/5
+       //public IActionResult Details(Guid? id)
+       //{
+       //    if (id == null)
+       //    {
+       //        return NotFound();
+       //    }
+           
+       //    var device = _deviceRepository.GetById(id);
+       //    if (device == null)
+       //    {
+       //        return NotFound();
+       //    }
 
-           var device = _deviceRepository.GetById(id);
-           if (device == null)
-           {
-               return NotFound();
-           }
-
-           return View(device);
-       }
+       //    return View(device);
+       //}
 
        
        /**
