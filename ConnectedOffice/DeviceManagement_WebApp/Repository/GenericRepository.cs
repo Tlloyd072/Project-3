@@ -9,11 +9,14 @@ namespace DeviceManagement_WebApp.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
+        //declared an instance to a database and the constructor to handle  database quiries to be to implement these methods per controller
+        
         protected readonly ConnectedOfficeContext _context;
         public GenericRepository(ConnectedOfficeContext context)
         {
             _context = context;
         }
+        // methods are implemented from which they are inherited from the IGeneric repo
         public void Add(T entity)
         {
             _context.Set<T>().Add(entity);
@@ -47,6 +50,7 @@ namespace DeviceManagement_WebApp.Repository
             _context.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
         }
+        
     }
 
 }
