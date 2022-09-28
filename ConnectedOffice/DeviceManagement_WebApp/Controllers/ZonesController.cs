@@ -18,29 +18,39 @@ namespace DeviceManagement_WebApp.Controllers
         {
             _zoneRepository = zoneRepository;
         }
-        // GET: Zone/Create
+        // GET: Zone/Create displays the create page to fill in a new Device record
         public IActionResult Create()
         {
             return View(new Zone());
         }
         [HttpPost]
+        //  this method allows to add and save data captured from the create view
+
         public ActionResult Create(Zone zone)
         {
             _zoneRepository.AddZone(zone);
             _zoneRepository.SaveChanges();
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        // this method is the same the edit / and GetByIt. it displays a specific Zone record based on the id parsed through
+
         public ActionResult Update(int id)
         {
             return View(_zoneRepository.GetById(id));
         }
         [HttpPost]
+        //this method adds and saves data captured from the update view and redirects to the index page
+
         public ActionResult Update(Zone zone)
         {
             _zoneRepository.UpdateZone(zone);
             _zoneRepository.SaveChanges();
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        //deletes a record from the database based on the id parse through
+
         public ActionResult Delete(int id)
         {
             _zoneRepository.DeleteZone(id);
@@ -48,7 +58,7 @@ namespace DeviceManagement_WebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Zones
+        // GET: Zones diplayes all records in the zones table
         public async Task<IActionResult> Index()
         {
             var zone = _zoneRepository.GetAll();
